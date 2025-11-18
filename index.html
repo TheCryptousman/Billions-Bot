@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billions Network Bot - Complete Implementation</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+color: #333;
+line-height: 1.6;
+min-height: 100vh;
+padding: 20px;
+}
+.container {
+max-width: 1200px;
+margin: 0 auto;
+background: rgba(255, 255, 255, 0.95);
+border-radius: 15px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+overflow: hidden;
+}
+header {
+background: linear-gradient(90deg, #1a2a6c, #2c3e50);
+color: white;
+padding: 30px;
+text-align: center;
+}
+h1 {
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+.tagline {
+font-size: 1.2rem;
+opacity: 0.9;
+margin-bottom: 20px;
+}
+.description {
+max-width: 800px;
+margin: 0 auto;
+font-size: 1.1rem;
+}
+.main-content {
+display: flex;
+flex-wrap: wrap;
+padding: 20px;
+}
+.sidebar {
+flex: 1;
+min-width: 250px;
+background: #f8f9fa;
+border-radius: 10px;
+padding: 20px;
+margin-right: 20px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.file-list {
+list-style: none;
+}
+.file-list li {
+padding: 12px 15px;
+margin-bottom: 8px;
+background: white;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.3s ease;
+border-left: 4px solid #1a2a6c;
+display: flex;
+align-items: center;
+}
+.file-list li:hover {
+background: #e9ecef;
+transform: translateX(5px);
+}
+.file-list li.active {
+background: #1a2a6c;
+color: white;
+}
+.file-icon {
+margin-right: 10px;
+font-size: 1.2rem;
+}
+.code-viewer {
+flex: 3;
+min-width: 300px;
+background: #2d2d2d;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.code-header {
+background: #1e1e1e;
+color: #ccc;
+padding: 15px 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid #444;
+}
+.file-name {
+font-weight: bold;
+font-size: 1.1rem;
+}
+.copy-btn {
+background: #1a2a6c;
+color: white;
+border: none;
+padding: 8px 15px;
+border-radius: 5px;
+cursor: pointer;
+transition: background 0.3s;
+}
+.copy-btn:hover {
+background: #2c3e50;
+}
+.code-content {
+padding: 20px;
+color: #f8f8f2;
+font-family: 'Courier New', monospace;
+white-space: pre-wrap;
+overflow-x: auto;
+max-height: 600px;
+overflow-y: auto;
+}
+.features {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 20px;
+padding: 30px;
+background: #f8f9fa;
+}
+.feature-card {
+background: white;
+padding: 25px;
+border-radius: 10px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+transition: transform 0.3s;
+}
+.feature-card:hover {
+transform: translateY(-5px);
+}
+.feature-icon {
+font-size: 2.5rem;
+color: #1a2a6c;
+margin-bottom: 15px;
+}
+.feature-title {
+font-size: 1.3rem;
+margin-bottom: 10px;
+color: #1a2a6c;
+}
+footer {
+text-align: center;
+padding: 20px;
+background: #2c3e50;
+color: white;
+margin-top: 20px;
+}
+@media (max-width: 768px) {
+.main-content {
+flex-direction: column;
+}
+.sidebar {
+margin-right: 0;
+margin-bottom: 20px;
+}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Billions Network "Bots" </h1>
+<p class="tagline">AI-Powered Community Matchmaking System</p>
+<p class="description">A comprehensive Discord bot that connects community
+members with opportunities, resources, and collaborators using intelligent AI matching.</p>
+</header>
+<div class="main-content">
+<div class="sidebar">
+<h3>Project Files</h3>
+<ul class="file-list">
+<li class="active" data-file="requirements">
+<span class="file-icon">📋</span> requirements.txt
+</li>
+<li data-file="config">
+<span class="file-icon">⚙</span> config.py
+</li>
+<li data-file="models">
+<span class="file-icon">🗃</span> models.py
+</li>
+<li data-file="database">
+<span class="file-icon">💾</span> database.py
+</li>
+<li data-file="ai_matcher">
+<span class="file-icon">🧠</span> ai_matcher.py
+</li>
+<li data-file="discord_helpers">
+<span class="file-icon">🤖</span> discord_helpers.py
+</li>
+<li data-file="app">
+<span class="file-icon">🚀</span> app.py
+</li>
+<li data-file="readme">
+<span class="file-icon">📖</span> README.md
+</li>
+</ul>
+</div>
+<div class="code-viewer">
+<div class="code-header">
+<div class="file-name">requirements.txt</div>
+<button class="copy-btn" onclick="copyCode()">Copy Code</button>
+</div>
+<div class="code-content" id="code-content">
+discord.py>=2.3.0
+openai>=1.3.0
+sqlalchemy>=2.0.0
+python-dotenv>=1.0.0
+aiohttp>=3.8.0
+asyncio
+</div>
+</div>
+</div>
+<div class="features">
+<div class="feature-card">
+<div class="feature-icon">🤝</div>
+<h3 class="feature-title">Smart Matching</h3>
+<p>AI-powered algorithm connects members based on skills, interests, and project
+needs for optimal collaboration.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🔍</div>
+<h3 class="feature-title">Expert Finder</h3>
+<p>Quickly locate community experts in specific domains using natural language
+queries.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">📚</div>
+<h3 class="feature-title">Resource Hub</h3>
+<p>Centralized access to curated resources, tutorials, and community-vetted
+materials.</p>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🚀</div>
+<h3 class="feature-title">Project Connector</h3>
+<p>Find collaborators, co-founders, or beta testers for your projects within the
+community.</p>
+</div>
+</div>
+<footer>
+<p>Billions Network Community Bot &copy; 2023 | Designed to Connect Billions</p>
+</footer>
+</div>
+<script>
+// File content data
+const fileContents = {
+requirements: `discord.py>=2.3.0
+openai>=1.3.0
+sqlalchemy>=2.0.0
+python-dotenv>=1.0.0
+aiohttp>=3.8.0
+asyncio`,
+config: `import os
+from dotenv import load_dotenv
+load_dotenv()
+class Config:
+# Discord Bot Token
+DISCORD_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
+# OpenAI API Key
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+# Database
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///billions_bot.db')
+# Bot Configuration
+COMMAND_PREFIX = '/'
+BOT_NAME = "Billions Connector"
+# Community Resources
+COMMUNITY_RESOURCES = {
+"business_plan": "https://docs.google.com/document/d/1abc123...",
+"pitch_deck": "https://docs.google.com/presentation/d/1def456...",
+"web_dev": "https://github.com/billions-network/web-dev-resources",
+"marketing": "https://www.notion.so/Billions-Marketing-Guide-123...",
+"funding": "https://airtable.com/shlCcXAM...",
+"legal": "https://docs.google.com/document/d/1ghi789..."
+}
+# Matching Configuration
+MATCH_THRESHOLD = 0.7
+MAX_MATCHES = 5`,
+models: `from sqlalchemy import Column, Integer, String, Text, JSON, DateTime,
+Boolean
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql import func
+import datetime
+Base = declarative_base()
+class UserProfile(Base):
+__tablename__ = "user_profiles"
+id = Column(Integer, primary_key=True)
+discord_id = Column(String(50), unique=True, nullable=False)
+discord_username = Column(String(100), nullable=False)
+# Profile Information
+skills = Column(JSON, default=list)
+interests = Column(JSON, default=list)
+needs = Column(JSON, default=list)
+current_project = Column(Text)
+looking_for = Column(JSON, default=list)
+expertise_level = Column(String(20), default="intermediate")
+available_for_help = Column(Boolean, default=True)
+# Timestamps
+created_at = Column(DateTime, default=func.now())
+updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+def to_dict(self):
+return {
+'id': self.id,
+'discord_id': self.discord_id,
+'discord_username': self.discord_username,
+'skills': self.skills,
+'interests': self.interests,
+'needs': self.needs,
+'current_project': self.current_project,
+'looking_for': self.looking_for,
+'expertise_level': self.expertise_level,
+'available_for_help': self.available_for_help,
+'created_at': self.created_at.isoformat() if self.created_at else None
+}
+class Opportunity(Base):
+__tablename__ = "opportunities"
+id = Column(Integer, primary_key=True)
+title = Column(String(200), nullable=False)
+description = Column(Text)
+opportunity_type = Column(String(50)) # job, collaboration, mentorship, etc.
+required_skills = Column(JSON, default=list)
+created_by = Column(String(50), nullable=False)
+contact_info = Column(Text)
+# Timestamps
+created_at = Column(DateTime, default=func.now())
+expires_at = Column(DateTime)
+def to_dict(self):
+return {
+'id': self.id,
+'title': self.title,
+'description': self.description,
+'opportunity_type': self.opportunity_type,
+'required_skills': self.required_skills,
+'created_by': self.created_by,
+'contact_info': self.contact_info,
+'created_at': self.created_at.isoformat() if self.created_at else None,
+'expires_at': self.expires_at.isoformat() if self.expires_at else None
+}`,
+database: `from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Base, UserProfile, Opportunity
+from config import Config
+import logging
+logger = logging.getLogger(__name__)
+class DatabaseManager:
+def __init__(self):
+self.engine = create_engine(Config.DATABASE_URL)
+self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+def init_db(self):
+"""Initialize database tables"""
+try:
+Base.metadata.create_all(bind=self.engine)
+logger.info("Database tables created successfully")
+except Exception as e:
+logger.error(f"Error creating database tables: {e}")
+raise
+def get_session(self):
+"""Get database session"""
+return self.SessionLocal()
+def add_user_profile(self, discord_id, discord_username, skills=None,
+interests=None, needs=None, current_project=None):
+"""Add or update user profile"""
+session = self.get_session()
+try:
+# Check if user already exists
+profile = session.query(UserProfile).filter_by(discord_id=discord_id).first()
+if profile:
+# Update existing profile
+profile.discord_username = discord_username
+profile.skills = skills or []
+profile.interests = interests or []
+profile.needs = needs or []
+profile.current_project = current_project
+else:
+# Create new profile
+profile = UserProfile(
+discord_id=discord_id,
+discord_username=discord_username,
+skills=skills or [],
+interests=interests or [],
+needs=needs or [],
+current_project=current_project
+)
+session.add(profile)
+session.commit()
+return profile
+except Exception as e:
+session.rollback()
+logger.error(f"Error adding user profile: {e}")
+raise
+finally:
+session.close()
+def get_user_profile(self, discord_id):
+"""Get user profile by Discord ID"""
+session = self.get_session()
+try:
+return session.query(UserProfile).filter_by(discord_id=discord_id).first()
+finally:
+session.close()
+def search_users_by_skills(self, skills):
+"""Search users by skills"""
+session = self.get_session()
+try:
+# This is a simple implementation - in production you'd want more sophisticated
+matching
+users = session.query(UserProfile).filter(
+UserProfile.available_for_help == True
+).all()
+# Filter users who have at least one of the requested skills
+matched_users = []
+for user in users:
+if any(skill in user.skills for skill in skills):
+matched_users.append(user)
+return matched_users
+finally:
+session.close()
+def add_opportunity(self, title, description, opportunity_type, required_skills, created_by,
+contact_info):
+"""Add a new opportunity"""
+session = self.get_session()
+try:
+opportunity = Opportunity(
+title=title,
+description=description,
+opportunity_type=opportunity_type,
+required_skills=required_skills,
+created_by=created_by,
+contact_info=contact_info
+)
+session.add(opportunity)
+session.commit()
+return opportunity
+except Exception as e:
+session.rollback()
+logger.error(f"Error adding opportunity: {e}")
+raise
+finally:
+session.close()`,
+ai_matcher: `import openai
+from config import Config
+import logging
+from typing import List, Dict, Any
+import json
+logger = logging.getLogger(__name__)
+class AIMatcher:
+def __init__(self):
+self.client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
+def find_best_matches(self, query: str, users: List[Dict[str, Any]], max_results: int = 5) ->
+List[Dict[str, Any]]:
+"""
+Use AI to find the best matches for a query from a list of users
+"""
+try:
+# Prepare user data for the AI
+user_data = []
+for user in users:
+user_info = f"User: {user['discord_username']}\n"
+user_info += f"Skills: {', '.join(user['skills'])}\n"
+user_info += f"Interests: {', '.join(user['interests'])}\n"
+if user.get('current_project'):
+user_info += f"Current Project: {user['current_project']}\n"
+user_info += f"Looking For: {', '.join(user.get('looking_for', []))}\n"
+user_data.append(user_info)
+user_data_str = "\n---\n".join(user_data)
+# Create the AI prompt
+prompt = f"""
+I have a community of users with the following profiles:
+{user_data_str}
+Query: "{query}"
+Please analyze the query and user profiles to find the best matches.
+Return a JSON array with the top {max_results} most relevant users, sorted by
+relevance.
+For each user, include:
+- discord_username
+- match_score (0-100)
+- reason_for_match (brief explanation)
+- relevant_skills (skills that match the query)
+Only return the JSON array, nothing else.
+"""
+response = self.client.chat.completions.create(
+model="gpt-3.5-turbo",
+messages=[
+{"role": "system", "content": "You are an expert at matching people for collaboration
+and mentorship opportunities."},
+{"role": "user", "content": prompt}
+],
+temperature=0.3,
+max_tokens=1500
+)
+# Parse the response
+result_text = response.choices[0].message.content.strip()
+matches = json.loads(result_text)
+return matches
+except Exception as e:
+logger.error(f"Error in AI matching: {e}")
+# Fallback to simple matching
+return self.simple_fallback_match(query, users, max_results)
+def simple_fallback_match(self, query: str, users: List[Dict[str, Any]], max_results: int) ->
+List[Dict[str, Any]]:
+"""
+Simple keyword-based fallback matching when AI fails
+"""
+query_lower = query.lower()
+scored_users = []
+for user in users:
+score = 0
+# Check skills
+for skill in user.get('skills', []):
+if skill.lower() in query_lower:
+score += 30
+# Check interests
+for interest in user.get('interests', []):
+if interest.lower() in query_lower:
+score += 20
+# Check project description
+if user.get('current_project') and any(word in user['current_project'].lower() for word in
+query_lower.split()):
+score += 15
+if score > 0:
+scored_users.append({
+'discord_username': user['discord_username'],
+'match_score': min(score, 100),
+'reason_for_match': f"Matched based on skills and interests",
+'relevant_skills': user.get('skills', [])[:3]
+})
+# Sort by score and limit results
+scored_users.sort(key=lambda x: x['match_score'], reverse=True)
+return scored_users[:max_results]
+def generate_connection_message(self, user1: Dict[str, Any], user2: Dict[str, Any]) -> str:
+"""
+Generate a personalized connection message between two users
+"""
+try:
+prompt = f"""
+User 1: {user1['discord_username']}
+Skills: {', '.join(user1.get('skills', []))}
+Interests: {', '.join(user1.get('interests', []))}
+Current Project: {user1.get('current_project', 'Not specified')}
+User 2: {user2['discord_username']}
+Skills: {', '.join(user2.get('skills', []))}
+Interests: {', '.join(user2.get('interests', []))}
+Current Project: {user2.get('current_project', 'Not specified')}
+Generate a warm, professional connection message that highlights why these two users
+should connect.
+Focus on complementary skills, shared interests, or potential collaboration opportunities.
+Keep it under 200 characters.
+"""
+response = self.client.chat.completions.create(
+model="gpt-3.5-turbo",
+messages=[
+{"role": "system", "content": "You are a helpful community connector who creates
+engaging introduction messages."},
+{"role": "user", "content": prompt}
+],
+temperature=0.7,
+max_tokens=100
+)
+return response.choices[0].message.content.strip()
+except Exception as e:
+logger.error(f"Error generating connection message: {e}")
+return f"🤝 {user1['discord_username']} and {user2['discord_username']} seem like they
+could have great synergy based on their profiles!"`,
+discord_helpers: `import discord
+from discord import app_commands
+from typing import List, Dict, Any
+import logging
+logger = logging.getLogger(__name__)
+class DiscordHelpers:
+def __init__(self, bot):
+self.bot = bot
+def create_profile_embed(self, user_profile: Dict[str, Any]) -> discord.Embed:
+"""Create a rich embed for user profiles"""
+embed = discord.Embed(
+title=f"👤 {user_profile['discord_username']}'s Profile",
+color=0x1a2a6c,
+timestamp=discord.utils.utcnow()
+)
+if user_profile.get('skills'):
+embed.add_field(
+name="🛠 Skills",
+value=", ".join(user_profile['skills'][:8]),
+inline=True
+)
+if user_profile.get('interests'):
+embed.add_field(
+name="🎯 Interests",
+value=", ".join(user_profile['interests'][:8]),
+inline=True
+)
+if user_profile.get('current_project'):
+embed.add_field(
+name="🚀 Current Project",
+value=user_profile['current_project'][:100] + "..." if len(user_profile['current_project']) >
+100 else user_profile['current_project'],
+inline=False
+)
+if user_profile.get('needs'):
+embed.add_field(
+name="🤝 Looking For",
+value=", ".join(user_profile['needs'][:5]),
+inline=True
+)
+embed.set_footer(text="Billions Network Connector")
+return embed
+def create_match_embed(self, query: str, matches: List[Dict[str, Any]]) -> discord.Embed:
+"""Create an embed displaying match results"""
+embed = discord.Embed(
+title=f"🔍 Match Results for: '{query}'",
+color=0xfdbb2d,
+timestamp=discord.utils.utcnow()
+)
+if not matches:
+embed.description = "No matches found. Try broadening your search criteria."
+return embed
+for i, match in enumerate(matches[:5], 1):
+field_value = f"**Match Score:** {match['match_score']}%\\n"
+field_value += f"**Reason:** {match['reason_for_match']}\\n"
+if match.get('relevant_skills'):
+field_value += f"**Relevant Skills:** {', '.join(match['relevant_skills'][:3])}"
+embed.add_field(
+name=f"{i}. {match['discord_username']}",
+value=field_value,
+inline=False
+)
+embed.set_footer(text=f"Found {len(matches)} potential matches")
+return embed
+def create_opportunity_embed(self, opportunity: Dict[str, Any]) -> discord.Embed:
+"""Create an embed for opportunity posts"""
+embed = discord.Embed(
+title=f"🎯 {opportunity['title']}",
+description=opportunity['description'],
+color=0xb21f1f,
+timestamp=discord.utils.utcnow()
+)
+embed.add_field(
+name="📋 Type",
+value=opportunity['opportunity_type'].title(),
+inline=True
+)
+if opportunity.get('required_skills'):
+embed.add_field(
+name="🛠 Required Skills",
+value=", ".join(opportunity['required_skills'][:5]),
+inline=True
+)
+embed.add_field(
+name="👤 Posted By",
+value=opportunity['created_by'],
+inline=True
+)
+if opportunity.get('contact_info'):
+embed.add_field(
+name="📞 Contact",
+value=opportunity['contact_info'],
+inline=False
+)
+embed.set_footer(text="Billions Network Opportunities")
+return embed
+async def send_typing_indicator(self, channel, duration=2):
+"""Show typing indicator for a specified duration"""
+async with channel.typing():
+import asyncio
+await asyncio.sleep(duration)`,
+app: `import discord
+from discord.ext import commands
+from discord import app_commands
+import os
+import logging
+from config import Config
+from database import DatabaseManager
+from ai_matcher import AIMatcher
+from discord_helpers import DiscordHelpers
+# Set up logging
+logging.basicConfig(
+level=logging.INFO,
+format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+class BillionsBot(commands.Bot):
+def __init__(self):
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+super().__init__(
+command_prefix=Config.COMMAND_PREFIX,
+intents=intents,
+help_command=None
+)
+self.db = DatabaseManager()
+self.ai_matcher = AIMatcher()
+self.helpers = None # Will be set in on_ready
+async def setup_hook(self):
+"""Called when the bot is starting up"""
+logger.info("Billions Bot is starting up...")
+# Initialize database
+try:
+self.db.init_db()
+logger.info("Database initialized successfully")
+except Exception as e:
+logger.error(f"Database initialization failed: {e}")
+# Initialize helpers
+self.helpers = DiscordHelpers(self)
+# Sync application commands
+await self.tree.sync()
+logger.info("Application commands synced")
+async def on_ready(self):
+"""Called when the bot is ready"""
+logger.info(f'{self.user} has connected to Discord!')
+logger.info(f'Bot is in {len(self.guilds)} guilds')
+# Set bot status
+activity = discord.Activity(
+type=discord.ActivityType.watching,
+name="for opportunities in Billions Network"
+)
+await self.change_presence(activity=activity)
+# Create bot instance
+bot = BillionsBot()
+# Slash Commands
+@bot.tree.command(name="setup_profile", description="Set up your community profile")
+async def setup_profile(interaction: discord.Interaction):
+"""Set up or update user profile"""
+await interaction.response.defer(ephemeral=True)
+# In a real implementation, you would use modals for this
+# For this example, we'll use a simple response
+try:
+# This would normally collect data through a modal or multiple prompts
+user_profile = bot.db.add_user_profile(
+discord_id=str(interaction.user.id),
+discord_username=interaction.user.name,
+skills=["python", "web development"], # Example data
+interests=["AI", "startups", "community building"],
+needs=["collaborators", "mentorship"],
+current_project="Building a community AI assistant"
+)
+embed = bot.helpers.create_profile_embed(user_profile.to_dict())
+await interaction.followup.send(embed=embed, ephemeral=True)
+except Exception as e:
+logger.error(f"Error setting up profile: {e}")
+await interaction.followup.send("❌ There was an error setting up your profile. Please try
+again.", ephemeral=True)
+@bot.tree.command(name="find_expert", description="Find experts in specific skills or
+domains")
+@app_commands.describe(query="What expertise are you looking for?")
+async def find_expert(interaction: discord.Interaction, query: str):
+"""Find experts using AI matching"""
+await interaction.response.defer()
+try:
+# Show typing indicator
+await bot.helpers.send_typing_indicator(interaction.channel)
+# Get all available users
+session = bot.db.get_session()
+users = session.query(bot.db.UserProfile).filter(
+bot.db.UserProfile.available_for_help == True
+).all()
+user_dicts = [user.to_dict() for user in users]
+# Use AI to find best matches
+matches = bot.ai_matcher.find_best_matches(query, user_dicts)
+# Create and send embed
+embed = bot.helpers.create_match_embed(query, matches)
+await interaction.followup.send(embed=embed)
+except Exception as e:
+logger.error(f"Error finding expert: {e}")
+await interaction.followup.send("❌ There was an error finding experts. Please try again.")
+@bot.tree.command(name="get_resource", description="Get community resources")
+@app_commands.describe(resource_type="Type of resource you need")
+@app_commands.choices(resource_type=[
+app_commands.Choice(name="Business Plan", value="business_plan"),
+app_commands.Choice(name="Pitch Deck", value="pitch_deck"),
+app_commands.Choice(name="Web Development", value="web_dev"),
+app_commands.Choice(name="Marketing", value="marketing"),
+app_commands.Choice(name="Funding", value="funding"),
+app_commands.Choice(name="Legal", value="legal")
+])
+async def get_resource(interaction: discord.Interaction, resource_type: str):
+"""Get community resources"""
+await interaction.response.defer(ephemeral=True)
+resource_url = Config.COMMUNITY_RESOURCES.get(resource_type)
+if resource_url:
+embed = discord.Embed(
+title="📚 Community Resource",
+description=f"Here's the resource you requested:",
+color=0x1a2a6c
+)
+embed.add_field(
+name="Resource Link",
+value=f"[Click here to access]({resource_url})",
+inline=False
+)
+await interaction.followup.send(embed=embed, ephemeral=True)
+else:
+await interaction.followup.send("❌ Resource not found. Please check the resource type.",
+ephemeral=True)
+@bot.tree.command(name="post_opportunity", description="Post a new opportunity to the
+community")
+async def post_opportunity(interaction: discord.Interaction):
+"""Post a new opportunity"""
+# In a real implementation, you would use a modal for this
+# For this example, we'll create a sample opportunity
+await interaction.response.defer()
+try:
+opportunity = bot.db.add_opportunity(
+title="Full Stack Developer Needed",
+description="Looking for a full stack developer to join our startup building an AI-powered
+platform.",
+opportunity_type="collaboration",
+required_skills=["JavaScript", "Python", "React", "Node.js"],
+created_by=interaction.user.name,
+contact_info=f"DM {interaction.user.name} on Discord"
+)
+embed = bot.helpers.create_opportunity_embed(opportunity.to_dict())
+await interaction.followup.send(embed=embed)
+except Exception as e:
+logger.error(f"Error posting opportunity: {e}")
+await interaction.followup.send("❌ There was an error posting your opportunity. Please try
+again.")
+# Run the bot
+if __name__ == "__main__":
+if not Config.DISCORD_TOKEN:
+logger.error("DISCORD_TOKEN environment variable is not set")
+exit(1)
+try:
+bot.run(Config.DISCORD_TOKEN)
+except Exception as e:
+logger.error(f"Error running bot: {e}")`,
+readme: `# Billions Network "Opportunity Connector" Bot
+## Overview
+An AI-powered Discord bot designed to connect community members with opportunities,
+resources, and collaborators within the Billions Network.
+## Features
+- 🤝 **Smart Member Matching**: AI-powered algorithm connects members based on skills and
+interests
+- 🔍 **Expert Finder**: Locate community experts using natural language queries
+- 📚 **Resource Hub**: Centralized access to community-vetted resources
+- 🚀 **Opportunity Board**: Post and discover collaboration opportunities
+- 👤 **Profile Management**: Comprehensive member profiles with skills and project
+information
+## Setup Instructions
+### Prerequisites
+- Python 3.8+
+- Discord Bot Token
+- OpenAI API Key
+### Installation
+1. Clone this repository
+2. Install dependencies:
+\`\`\`bash
+pip install -r requirements.txt
+\`\`\`
+3. Set up environment variables:
+\`\`\`bash
+# Create .env file
+DISCORD_BOT_TOKEN=your_discord_bot_token_here
+OPENAI_API_KEY=your_openai_api_key_here
+DATABASE_URL=sqlite:///billions_bot.db
+\`\`\`
+4. Run the bot:
+\`\`\`bash
+python app.py
+\`\`\`
+## Available Commands
+- \`/setup_profile\` - Create or update your community profile
+- \`/find_expert <query>\` - Find experts using AI matching
+- \`/get_resource <type>\` - Access community resources
+- \`/post_opportunity\` - Share new opportunities with the community
+## Configuration
+Edit \`config.py\` to customize:
+- Community resources
+- Matching thresholds
+- Bot behavior settings
+## Contributing
+We welcome contributions from the Billions Network community! Please see our contribution
+guidelines for more information.
+## Support
+For help with the bot, join our Discord community or create an issue in the repository.`
+};
+// File selection functionality
+document.querySelectorAll('.file-list li').forEach(item => {
+item.addEventListener('click', function() {
+// Remove active class from all items
+document.querySelectorAll('.file-list li').forEach(li => {
+li.classList.remove('active');
+});
+// Add active class to clicked item
+this.classList.add('active');
+// Update code viewer
+const file = this.getAttribute('data-file');
+document.querySelector('.file-name').textContent = this.textContent.trim();
+document.getElementById('code-content').textContent = fileContents[file];
+});
+});
+// Copy code functionality
+function copyCode() {
+const codeContent = document.getElementById('code-content').textContent;
+navigator.clipboard.writeText(codeContent).then(() => {
+const copyBtn = document.querySelector('.copy-btn');
+const originalText = copyBtn.textContent;
+copyBtn.textContent = 'Copied!';
+setTimeout(() => {
+copyBtn.textContent = originalText;
+}, 2000);
+});
+}
+</script>
+</body>
+</html>
